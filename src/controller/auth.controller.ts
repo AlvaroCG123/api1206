@@ -27,7 +27,7 @@ export async function Login(req: Request, res: Response) {
         )
 
         res.status(200).json({
-            mensgaem: "Usuario logado com sucesso.",
+            mensagem: "Usuario logado com sucesso.",
             token,
             usuario: {
                 id: usuario.id,

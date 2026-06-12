@@ -144,6 +144,26 @@ export async function AtualizarConvidado(req: AuthRequest, res: Response) {
             return
         }
 
+        const usuarioExiste = await prisma.convidado.findFirst({
+            where:{
+                OR: [
+                    { email },
+                    { cpf }
+                ]
+            }
+        })
+
+        if(usuarioExiste){
+            if(usuarioExiste.email === email){
+                res.status(409).json({error: "Este email já esta cadastrado."})
+                return
+            }
+            if(usuarioExiste.cpf === cpf){
+                res.status(409).json({error: "Este cpf já esta cadastrado."})
+                return
+            }
+        }
+
         const atualizar = await prisma.convidado.update({
             where: { id: Number(id) },
             data: { nome, sobrenome, cpf, telefone, email, mesa, status, usuarioId },
