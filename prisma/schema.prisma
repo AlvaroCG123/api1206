@@ -31,7 +31,7 @@ enum Cargo {
 model Convidado {
   id         Int       @id @default(autoincrement())
   nome       String
-  sobbrenome String
+  sobrenome String
   cpf        String @unique
   telefone   String
   email      String

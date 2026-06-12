@@ -64,24 +64,24 @@ export async function PesquisaConvidado(req: Request, res: Response) {
 
 export async function CriarConvidados(req: AuthRequest, res: Response) {
     try {
-        const { nome, sobbrenome, cpf, telefone, email, mesa, status } = req.body
+        const { id, nome, sobrenome, cpf, telefone, email, mesa, status } = req.body
 
         const usuarioId = req.usuarioId
         if (!usuarioId) {
             res.status(401).json({ error: "usuario não identificado." })
             return
         }
-        if (!nome || !sobbrenome || !cpf || !telefone || !email || !mesa || !status) {
+        if (!nome || !sobrenome || !cpf || !telefone || !email || !mesa || !status) {
             res.status(400).json({ error: "Dados faltando." })
             return
         }
 
         const criar = await prisma.convidado.create({
-            data: { nome, sobbrenome, cpf, telefone, email, mesa, status, usuarioId },
+            data: { nome, sobrenome, cpf, telefone, email, mesa, status, usuarioId },
             select: {
                 id: true,
                 nome: true,
-                sobbrenome: true,
+                sobrenome: true,
                 cpf: true,
                 mesa: true,
                 status: true
@@ -104,7 +104,7 @@ export async function AtualizarConvidado(req: AuthRequest, res: Response) {
             return
         }
         const usuario = await prisma.convidado.findUnique({
-            where: { cpf }
+            where: { id: Number(id) }
         })
 
         if (!usuario) {
@@ -159,7 +159,7 @@ export async function Checkin(req: AuthRequest, res: Response) {
             return
         }
 
-        if (!usuario.status === true) {
+        if (usuario.status === true) {
             res.status(401).json({ error: "Convidado já fez Check-in." })
             return
         }

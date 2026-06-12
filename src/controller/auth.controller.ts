@@ -15,7 +15,7 @@ export async function Login(req: Request, res: Response) {
             where: { email }
         })
 
-        if (!usuario) {
+        if (!usuario || !(await bcrypt.compare(senha, usuario.senha))) {
             res.status(400).json({ error: "Email ou senha incorretos." })
             return
         }

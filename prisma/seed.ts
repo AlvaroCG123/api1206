@@ -29,7 +29,7 @@ export async function main() {
 
         const GeradorConvidado: Prisma.ConvidadoCreateManyInput[] = Array.from({length:30}).map((_,index)=>({
             nome:`Convidado`,
-            sobbrenome:`Teste ${index+1}`,
+            sobrenome:`Teste ${index+1}`,
             cpf:`111.111.111-${(index+1).toString().padStart(2,`0`)}`,
             telefone:`539999999${(index+1).toString().padStart(2,`0`)}`,
             email:`convidado${index+1}@teste.com`,
