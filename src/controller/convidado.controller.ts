@@ -23,7 +23,7 @@ export async function ListarConvidados(req: Request, res: Response) {
             select: {
                 id: true,
                 nome: true,
-                sobbrenome: true,
+                sobrenome: true,
                 cpf: true,
                 mesa: true,
                 status: true
@@ -48,7 +48,7 @@ export async function PesquisaConvidado(req: Request, res: Response) {
             select: {
                 id: true,
                 nome: true,
-                sobbrenome: true,
+                sobrenome: true,
                 cpf: true,
                 mesa: true,
                 status: true
@@ -76,6 +76,26 @@ export async function CriarConvidados(req: AuthRequest, res: Response) {
             return
         }
 
+        const usuarioExiste = await prisma.convidado.findFirst({
+            where:{
+                OR: [
+                    { email },
+                    { cpf }
+                ]
+            }
+        })
+
+        if(usuarioExiste){
+            if(usuarioExiste.email === email){
+                res.status(409).json({error: "Este email já esta cadastrado."})
+                return
+            }
+            if(usuarioExiste.cpf === cpf){
+                res.status(409).json({error: "Este cpf já esta cadastrado."})
+                return
+            }
+        }
+
         const criar = await prisma.convidado.create({
             data: { nome, sobrenome, cpf, telefone, email, mesa, status, usuarioId },
             select: {
@@ -90,6 +110,7 @@ export async function CriarConvidados(req: AuthRequest, res: Response) {
 
         res.status(201).json(criar)
     } catch (error) {
+
         res.status(500).json({ error: "Falha ao criar convidado." })
         return
     }
@@ -97,7 +118,7 @@ export async function CriarConvidados(req: AuthRequest, res: Response) {
 
 export async function AtualizarConvidado(req: AuthRequest, res: Response) {
     try {
-        const { nome, sobbrenome, cpf, telefone, email, mesa, status } = req.body
+        const { nome, sobrenome, cpf, telefone, email, mesa, status } = req.body
         const { id } = req.params
         if (!id) {
             res.status(400).json({ error: "ID inválido." })
@@ -118,18 +139,18 @@ export async function AtualizarConvidado(req: AuthRequest, res: Response) {
             res.status(401).json({ error: "usuario não identificado." })
             return
         }
-        if (!nome || !sobbrenome || !cpf || !telefone || !email || !mesa || !status) {
+        if (!nome || !sobrenome || !cpf || !telefone || !email || !mesa || !status) {
             res.status(400).json({ error: "Dados faltando." })
             return
         }
 
         const atualizar = await prisma.convidado.update({
             where: { id: Number(id) },
-            data: { nome, sobbrenome, cpf, telefone, email, mesa, status, usuarioId },
+            data: { nome, sobrenome, cpf, telefone, email, mesa, status, usuarioId },
             select: {
                 id: true,
                 nome: true,
-                sobbrenome: true,
+                sobrenome: true,
                 cpf: true,
                 mesa: true,
                 status: true
@@ -170,7 +191,7 @@ export async function Checkin(req: AuthRequest, res: Response) {
             select: {
                 id: true,
                 nome: true,
-                sobbrenome: true,
+                sobrenome: true,
                 cpf: true,
                 mesa: true,
                 status: true
@@ -205,7 +226,7 @@ export async function DeletarConvidado(req: AuthRequest, res: Response) {
             select: {
                 id: true,
                 nome: true,
-                sobbrenome: true,
+                sobrenome: true,
                 cpf: true,
                 mesa: true,
                 status: true
