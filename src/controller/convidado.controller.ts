@@ -25,6 +25,8 @@ export async function ListarConvidados(req: Request, res: Response) {
                 nome: true,
                 sobrenome: true,
                 cpf: true,
+                telefone: true,
+                email:true,
                 mesa: true,
                 status: true
             }
@@ -49,6 +51,8 @@ export async function PesquisaConvidado(req: Request, res: Response) {
                 id: true,
                 nome: true,
                 sobrenome: true,
+                telefone: true,
+                email:true,
                 cpf: true,
                 mesa: true,
                 status: true
