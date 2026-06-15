@@ -71,7 +71,7 @@ export async function CriarConvidados(req: AuthRequest, res: Response) {
             res.status(401).json({ error: "usuario não identificado." })
             return
         }
-        if (!nome || !sobrenome || !cpf || !telefone || !email || !mesa || !status) {
+        if (!nome || !sobrenome || !cpf || !telefone || !email || !mesa || status === undefined) {
             res.status(400).json({ error: "Dados faltando." })
             return
         }
